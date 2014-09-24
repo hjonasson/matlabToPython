@@ -72,19 +72,23 @@ def mexShape(shapeFile,*args):
 	sf 						= 	shapefile.Reader(shapeFile)
 	sAttributes 			= 	sf.records()
 	sFieldNames 			= 	sf.fields
-	selectionIndex 			=	np.zeros(len(sAttributes) - 1)
+	selectionIndex 			=	np.zeros(len(sAttributes))
 
 	for i in range(len(filterFields)):
 
 		filterFieldIndex 	= [j-1 for j in range(len(sFieldNames)) if sFieldNames[j][0] == filterFields[i]]
-		print filterFieldIndex
-		filterFieldList = [i[filterFieldIndex[0]] for i in sf.iterRecords()]
-		print filterFieldList
-		if isinstance(filterFieldIndex[0],str):
-			True
-		else:
-			True
-	return True
+		filterFieldList 	= [j[filterFieldIndex[0]] for j in sf.iterRecords()]
+		for k in range(len(filterFieldList)):
+			if filterFieldList[k] == filterValues[i]:
+				selectionIndex[k] = selectionIndex[k] + 1
+
+	sIndex 					= [l for l in range(len(selectionIndex)) if selectionIndex[l] == len(filterFields)]
+	data = [sf.shape(m) for m in sIndex]
+	return data
+
+
+
+
 
 ### To be translated ###
 
